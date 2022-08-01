@@ -306,18 +306,26 @@ fn is_release_profile() -> bool {
 #[cfg(all(target_env = "msvc", target_pointer_width = "32"))]
 fn get_lib_dir() -> PathBuf {
     if is_release_profile() {
-        get_crate_dir().join("msvc/Win32/Release/v142/")
+        get_crate_dir().join("msvc/Win32/Release/v143/")
     } else {
-        get_crate_dir().join("msvc/Win32/Debug/v142/")
+        get_crate_dir().join("msvc/Win32/Debug/v143/")
     }
 }
 
 #[cfg(all(target_env = "msvc", target_pointer_width = "64"))]
 fn get_lib_dir() -> PathBuf {
-    if is_release_profile() {
-        get_crate_dir().join("msvc/x64/Release/v142/")
-    } else {
-        get_crate_dir().join("msvc/x64/Debug/v142/")
+                let mut target_arch = std::env::var("CARGO_CFG_TARGET_ARCH").unwrap(); 
+                if target_arch == "x86_64" { 
+                    target_arch = "x64".to_owned();
+                } else if target_arch == "aarch64" {
+                    target_arch = "arm64".to_owned();
+                }
+                    
+                if is_release_profile() {
+                    get_crate_dir().join(format!("msvc/{}/Release/v143/", target_arch)) 
+                } else {
+                    get_crate_dir().join(format!("msvc/{}/Debug/v143/", target_arch))
+                }
     }
 }
 
