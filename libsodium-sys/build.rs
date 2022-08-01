@@ -326,7 +326,6 @@ fn get_lib_dir() -> PathBuf {
                 } else {
                     get_crate_dir().join(format!("msvc/{}/Debug/v143/", target_arch))
                 }
-    }
 }
 
 #[cfg(all(windows, not(target_env = "msvc"), target_pointer_width = "32"))]
